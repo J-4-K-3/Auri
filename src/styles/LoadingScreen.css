@@ -1,0 +1,60 @@
+/* Loading Screen Styles */
+.loading-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.loading-gradient {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #FFC14D 0%, #FF8A65 50%, #F76E8E 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-container {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+.loading-logo {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--slate900);
+  margin: 0;
+}
+
+.loading-tagline {
+  color: rgba(15, 18, 32, 0.7);
+  font-size: 16px;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+.wave {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  bottom: 120px;
+  opacity: 0.4;
+}
+
+.wave-fill {
+  width: 100%;
+  height: 100%;
+  border-radius: 240px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
+}

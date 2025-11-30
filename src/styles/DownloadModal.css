@@ -1,0 +1,86 @@
+.dm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 12, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.dm-modal {
+  max-width: 640px;
+  width: 100%;
+  background: linear-gradient(180deg, var(--slate700), #151823);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  color: var(--white);
+  border: 1px solid rgba(255, 138, 101, 0.06);
+}
+
+.dm-modal h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.dm-message {
+  font-size: 14px;
+  color: rgba(233, 236, 244, 0.86);
+  line-height: 1.6;
+  white-space: pre-line;
+  margin-bottom: 18px;
+}
+
+.dm-quote {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid rgba(255, 138, 101, 0.14);
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: rgba(233, 236, 244, 0.95);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.dm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.dm-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dm-cancel {
+  background: transparent;
+  color: rgba(233, 236, 244, 0.8);
+  border: 1px solid rgba(233, 236, 244, 0.04);
+}
+
+.dm-confirm {
+  background: linear-gradient(135deg, #FF8A65, #F76E8E);
+  color: white;
+  border: none;
+}
+
+@media (max-width: 480px) {
+  .dm-modal {
+    padding: 16px;
+  }
+
+  .dm-actions {
+    justify-content: stretch;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .dm-btn {
+    width: 100%;
+  }
+}

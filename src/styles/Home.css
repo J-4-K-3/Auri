@@ -1,0 +1,201 @@
+/* Home Page Styles */
+.home-container {
+  min-height: 100vh;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, var(--slate800) 0%, #1a1f35 100%);
+}
+
+.home-content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.home-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+}
+
+.screenshots-carousel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.carousel-image {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 9 / 16;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.carousel-image:hover {
+  transform: translateY(-4px);
+}
+
+.description-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.description-section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.tagline {
+  font-size: 18px;
+  color: var(--blush);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 16px;
+  color: rgba(233, 236, 244, 0.72);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.download-btn {
+  align-self: center;
+  background: linear-gradient(135deg, #FF8A65, #F76E8E);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(255, 138, 101, 0.3);
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  box-shadow: 0 6px 20px rgba(255, 138, 101, 0.4);
+}
+
+.download-btn:active {
+  transform: translateY(2px);
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 40px 16px;
+  }
+
+  .home-content {
+    gap: 30px;
+  }
+
+  .description-section h2 {
+    font-size: 24px;
+  }
+
+  .description-section {
+    padding: 12px;
+  }
+
+  .home-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .screenshots-carousel {
+    gap: 12px;
+  }
+
+  .carousel-image {
+    max-width: 180px;
+    aspect-ratio: 9 / 16;
+  }
+
+  .tagline {
+    font-size: 16px;
+  }
+
+  .download-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 30px 12px;
+  }
+
+  .home-content {
+    gap: 24px;
+  }
+
+  .logo-section {
+    margin-bottom: 12px;
+  }
+
+  .description-section h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .description-section {
+    padding: 8px;
+  }
+
+  .tagline {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .description {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .home-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .screenshots-carousel {
+    gap: 8px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .carousel-image {
+    max-width: 360px;
+    width: 85vw;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  /* Slightly larger gap between images on small screens */
+  .screenshots-carousel {
+    gap: 10px;
+  }
+
+  .download-btn {
+    padding: 11px 20px;
+    font-size: 13px;
+    width: 85%;
+  }
+}
