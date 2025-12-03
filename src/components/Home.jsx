@@ -66,7 +66,7 @@ export const Home = () => {
           <h2>Welcome to Auri</h2>
           <p className="tagline">A calm place to share your world.</p>
           <p className="description">
-            Auri is a quiet social platform designed to help you connect with others in a peaceful way. Share your thoughts, photos, and moments without the noise and clutter of traditional social media.
+            Auri is a quiet social platform designed to help you connect with others in a peaceful way. Share your thoughts, photos and moments without the noise and clutter of traditional social media.
           </p>
         </motion.div>
 
@@ -83,7 +83,7 @@ export const Home = () => {
         <DownloadModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          downloadUrl="https://drive.google.com/uc?export=download&id=1vMruOnZ3v6S1qTvyZH2TdcOSDpeLYw_G"
+          downloadUrl="https://apknow.one/opjojFmuNZIGOKa"
         />
       </motion.div>
     </motion.div>

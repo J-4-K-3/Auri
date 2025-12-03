@@ -1,0 +1,125 @@
+.terms-container {
+  min-height: 100vh;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, var(--slate800) 0%, #1a1f35 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.terms-content {
+  max-width: 900px;
+  width: 100%;
+  background: var(--slate700);
+  border-radius: 12px;
+  padding: 28px;
+  border: 1px solid rgba(233, 236, 244, 0.04);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  color: white;
+}
+
+.terms-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: rgba(233,236,244,0.9);
+  border: 1px solid rgba(233,236,244,0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 18px;
+}
+
+.terms-content h1 {
+  font-size: 28px;
+  margin: 10px 0 12px;
+}
+
+.terms-summary {
+  color: rgba(233,236,244,0.9);
+  margin-bottom: 18px;
+}
+
+.terms-section {
+  background: linear-gradient(135deg, rgba(255, 138, 101, 0.02), rgba(247,110,142,0.02));
+  padding: 18px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  border-left: 4px solid rgba(255,138,101,0.06);
+}
+
+.terms-section h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.terms-section p {
+  color: rgba(233,236,244,0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Accordion styles */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.accordion-item {
+  background: transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(233,236,244,0.03);
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(135deg, rgba(255,138,101,0.02), rgba(247,110,142,0.02));
+  padding: 14px 16px;
+  color: rgba(233,236,244,0.95);
+  cursor: pointer;
+  border: none;
+  font-weight: 700;
+}
+
+.accordion-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.28s ease, padding 0.28s ease;
+  padding: 0 16px;
+}
+
+.accordion-content.open {
+  max-height: 2000px; /* large enough to reveal content */
+  padding: 12px 16px 18px;
+}
+
+.accordion-inner {
+  color: rgba(233,236,244,0.88);
+  line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+  .terms-content {
+    padding: 18px;
+    border-radius: 10px;
+  }
+
+  .terms-content h1 {
+    font-size: 22px;
+  }
+
+  .terms-back {
+    padding: 8px 10px;
+  }
+}

@@ -6,6 +6,7 @@ import { Home } from './components/Home';
 import { About } from './components/About';
 import { Download } from './components/Download';
 import { Reviews } from './components/Reviews';
+import { Terms } from './components/Terms';
 import { Footer } from './components/Footer';
 import { Navigation } from './components/Navigation';
 import './styles/globals.css';
@@ -33,6 +34,7 @@ function App() {
                   <Route path="/about" element={<About />} />
                   <Route path="/download" element={<Download />} />
                   <Route path="/reviews" element={<Reviews />} />
+                  <Route path="/terms" element={<Terms />} />
                 </Routes>
               </main>
               <Footer />

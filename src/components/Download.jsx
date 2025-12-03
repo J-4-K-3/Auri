@@ -80,7 +80,7 @@ export const Download = () => {
         <DownloadModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          downloadUrl="https://drive.google.com/uc?export=download&id=1vMruOnZ3v6S1qTvyZH2TdcOSDpeLYw_G"
+          downloadUrl="https://apknow.one/opjojFmuNZIGOKa"
         />
       </motion.div>
     </motion.div>

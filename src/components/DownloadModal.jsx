@@ -38,21 +38,15 @@ export const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
           >
             <h2 id="dm-title">Download Auri APK</h2>
             <p className="dm-message">
-              When downloading you will receive a warning that looks like this:
+              You will be redirected to our host to download the APK.
             </p>
 
             <div className="dm-quote">
-              "Google Drive has detected issues with your download"
-              <br />
-              <br />
-              "This file is too large for Google to scan for viruses."
-              <br />
-              <br />
-              "This file is executable and may harm your computer."
+              You'll be taken to <strong>apknow.one</strong>. Click "Download" and the APK will begin downloading instantly.
             </div>
 
             <p className="dm-message">
-              Do not be alarmed by this. Auri is an official app by Innoxation — you can safely download anyway.
+              We only link to verified hosts — sites we use are reviewed and safe.
             </p>
 
             <div className="dm-actions">
@@ -60,7 +54,7 @@ export const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
                 Cancel
               </button>
               <button className="dm-btn dm-confirm" onClick={handleDownload}>
-                Understood — Download
+                Download from apknow.one
               </button>
             </div>
           </motion.div>

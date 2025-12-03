@@ -188,9 +188,9 @@
     border-radius: 20px;
   }
 
-  /* Slightly larger gap between images on small screens */
+  /* Larger gap between images on small screens */
   .screenshots-carousel {
-    gap: 10px;
+    gap: 35px;
   }
 
   .download-btn {
