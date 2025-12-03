@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import '../styles/Terms.css';
 
 const sectionsData = [
@@ -162,10 +162,6 @@ export const Terms = () => {
   return (
     <div className="terms-container">
       <div className="terms-content">
-        <button className="terms-back" onClick={() => navigate('/')} aria-label="Go back">
-          <FiArrowLeft size={16} style={{ marginRight: 8 }} /> Go back
-        </button>
-
         <h1>Terms &amp; Conditions — Overview</h1>
 
         <div className="accordion">

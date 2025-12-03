@@ -19,7 +19,7 @@ export const Footer = () => {
         </div>
 
         <div className="footer-section footer-links">
-          <a href="/terms" className="footer-link">Terms of Service</a>
+          {/* Terms moved into primary navigation under 'Legal' */}
         </div>
       </div>
     </footer>
