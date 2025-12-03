@@ -2,8 +2,8 @@
 import { Client, Account, Databases, Storage, ID, Permission, Role, Query } from 'appwrite';
 
 export const appwriteConfig = {
-  endpoint: 'https://fra.cloud.appwrite.io/v1',
-  projectId: '68d7f6bb000b001fe1e7',
+  endpoint: import.meta.env.VITE_APPWRITE_ENDPOINT,
+  projectId: import.meta.env.VITE_APPWRITE_PROJECT_ID,
 };
 
 const client = new Client()
@@ -15,11 +15,11 @@ export const databases = new Databases(client);
 export const storage = new Storage(client);
 export const IDs = ID;
 
-export const APPWRITE_DATABASE_ID = '68d7ff030039f99032c2';
+export const APPWRITE_DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 
 // APPWRITE_DATABASE_ID Tables IDs
-export const COLLECTION_USERS_ID = 'users';
-export const COLLECTION_REVIEWS_ID = 'reviews';
+export const COLLECTION_USERS_ID = import.meta.env.VITE_APPWRITE_COLLECTION_USERS_ID;
+export const COLLECTION_REVIEWS_ID = import.meta.env.VITE_APPWRITE_COLLECTION_REVIEWS_ID;
 
 // ============================================
 // SANITIZATION HELPERS (ported from mobile)
