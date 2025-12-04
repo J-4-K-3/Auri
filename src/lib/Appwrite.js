@@ -143,6 +143,12 @@ export const fetchReviews = async () => {
       COLLECTION_REVIEWS_ID,
       [Query.orderDesc('createdAt')]
     );
+       console.log('Fetched reviews:', response.documents?.map(r => ({
+         id: r.$id,
+         userId: r.userId,
+         verified: r.verified,
+         username: r.username,
+       })));
     return response.documents || [];
   } catch (error) {
     console.error('Error fetching reviews:', error);
@@ -192,8 +198,25 @@ export const submitReview = async (reviewData) => {
  * @param {string} reviewId - The review document ID
  * @param {Object} updateData - { rating, message } fields to update
  */
-export const updateReview = async (reviewId, updateData) => {
+export const updateReview = async (reviewId, updateData, currentUser) => {
   try {
+    // Guests cannot edit reviews
+    if (!currentUser || !currentUser.$id) {
+      throw new Error('You must be logged in to edit reviews.');
+    }
+
+    // First, fetch the review to verify ownership
+    const review = await databases.getDocument(
+      APPWRITE_DATABASE_ID,
+      COLLECTION_REVIEWS_ID,
+      reviewId
+    );
+
+    // Check ownership: only the review owner can edit
+    if (review.userId !== currentUser.$id) {
+      throw new Error('You can only edit your own reviews.');
+    }
+
     const payload = {
       rating: parseInt(updateData.rating),
       message: updateData.message,
@@ -215,9 +238,27 @@ export const updateReview = async (reviewId, updateData) => {
 /**
  * Delete a review
  * @param {string} reviewId - The review document ID
+ * @param {object} currentUser - The current logged-in user
  */
-export const deleteReview = async (reviewId) => {
+export const deleteReview = async (reviewId, currentUser) => {
   try {
+    // Guests cannot delete reviews
+    if (!currentUser || !currentUser.$id) {
+      throw new Error('You must be logged in to delete reviews.');
+    }
+
+    // First, fetch the review to verify ownership
+    const review = await databases.getDocument(
+      APPWRITE_DATABASE_ID,
+      COLLECTION_REVIEWS_ID,
+      reviewId
+    );
+
+    // Check ownership: only the review owner can delete
+    if (review.userId !== currentUser.$id) {
+      throw new Error('You can only delete your own reviews.');
+    }
+
     await databases.deleteDocument(
       APPWRITE_DATABASE_ID,
       COLLECTION_REVIEWS_ID,

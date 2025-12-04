@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+// edit/delete removed; no icons needed
 import {
   fetchReviews,
   submitReview,
@@ -12,8 +12,6 @@ import {
   saveReviewsCache,
   getReviewsCache,
   getLastSyncTime,
-  updateReview,
-  deleteReview,
 } from '../lib/Appwrite';
 import LoginModal from './LoginModal';
 import '../styles/Reviews.css';
@@ -28,10 +26,7 @@ export const Reviews = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [editingReviewId, setEditingReviewId] = useState(null);
-  const [editFormData, setEditFormData] = useState({ rating: 5, message: '' });
-  const [isEditSubmitting, setIsEditSubmitting] = useState(false);
-  const [editError, setEditError] = useState('');
+  // Editing removed: guests cannot edit/delete; owners editing will be added later
 
   // Listen for online/offline status changes
   useEffect(() => {
@@ -94,8 +89,17 @@ export const Reviews = () => {
   }, [isOnline]);
 
   const handleAddReview = () => {
-    // Show login modal instead of directly submitting
-    setIsLoginModalOpen(true);
+    // If user is logged in, open the review form directly.
+    // If not logged in, prompt the login modal.
+    if (currentUser) {
+      setFormData((prev) => ({
+        ...prev,
+        username: currentUser.name || currentUser.email || prev.username,
+      }));
+      setIsFormOpen(true);
+    } else {
+      setIsLoginModalOpen(true);
+    }
   };
 
   const handleLoginAttempt = async (username, password) => {
@@ -103,6 +107,7 @@ export const Reviews = () => {
       const user = await loginUser(username, password);
       setCurrentUser(user);
       saveSession(user); // Explicitly save session
+        console.log('Login successful:', { userId: user.$id, name: user.name, email: user.email });
       setFormData((prev) => ({ ...prev, username: user.name || user.email || username }));
       setIsLoginModalOpen(false);
 
@@ -128,9 +133,8 @@ export const Reviews = () => {
     setIsSubmitting(true);
     setSubmitError('');
 
-    // Ensure userId is a valid Appwrite $id (already validated from user.$id)
-    // or null/empty string for guest submissions
-    const cleanUserId = userId || '';
+    // If currentUser exists prefer its $id; otherwise use provided userId or empty string for guest
+    const cleanUserId = (currentUser && currentUser.$id) || userId || '';
 
     try {
       await submitReview({
@@ -176,76 +180,7 @@ export const Reviews = () => {
     }
   };
 
-  const handleEditReview = (review) => {
-    setEditingReviewId(review.$id);
-    setEditFormData({ rating: review.rating, message: review.message });
-    setEditError('');
-  };
-
-  const handleCancelEdit = () => {
-    setEditingReviewId(null);
-    setEditFormData({ rating: 5, message: '' });
-    setEditError('');
-  };
-
-  const handleSaveEdit = async (reviewId) => {
-    if (!editFormData.message.trim()) {
-      setEditError('Review message cannot be empty');
-      return;
-    }
-
-    setIsEditSubmitting(true);
-    setEditError('');
-
-    try {
-      await updateReview(reviewId, {
-        rating: editFormData.rating,
-        message: editFormData.message,
-      });
-
-      // Refresh reviews
-      if (isOnline) {
-        const updatedReviews = await fetchReviews();
-        saveReviewsCache(updatedReviews);
-        setReviews(updatedReviews);
-      } else {
-        // Update local cache
-        const updated = reviews.map((r) =>
-          r.$id === reviewId
-            ? { ...r, rating: editFormData.rating, message: editFormData.message }
-            : r
-        );
-        setReviews(updated);
-        saveReviewsCache(updated);
-      }
-
-      setEditingReviewId(null);
-      setEditFormData({ rating: 5, message: '' });
-    } catch (error) {
-      setEditError('Failed to save changes. Please try again.');
-      console.error('Edit error:', error);
-    } finally {
-      setIsEditSubmitting(false);
-    }
-  };
-
-  const handleDeleteReview = async (reviewId) => {
-    if (!window.confirm('Are you sure you want to delete this review?')) {
-      return;
-    }
-
-    try {
-      await deleteReview(reviewId);
-
-      // Remove from local state and cache
-      const updated = reviews.filter((r) => r.$id !== reviewId);
-      setReviews(updated);
-      saveReviewsCache(updated);
-    } catch (error) {
-      console.error('Delete error:', error);
-      alert('Failed to delete review. Please try again.');
-    }
-  }
+  // Edit/delete functionality removed for now per request
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }).map((_, i) => (
@@ -338,7 +273,7 @@ export const Reviews = () => {
               <div className="form-buttons">
                 <button
                   className="btn-submit"
-                  onClick={handleAddReview}
+                  onClick={() => submitReviewToAppwrite()}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Review'}
@@ -362,7 +297,7 @@ export const Reviews = () => {
         {!isFormOpen && (
           <motion.button
             className="btn-add-review"
-            onClick={() => setIsFormOpen(true)}
+            onClick={handleAddReview}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0 }}
@@ -408,26 +343,6 @@ export const Reviews = () => {
                     <span className="review-meta">
                       {new Date(review.createdAt).toLocaleDateString()} • v{review.appVersion}
                     </span>
-                    {review.verified && currentUser && review.userId === currentUser.$id && (
-                      <div className="review-actions">
-                        <button
-                          className="review-action-btn edit-btn"
-                          onClick={() => handleEditReview(review)}
-                          title="Edit review"
-                          aria-label="Edit review"
-                        >
-                          <FiEdit2 size={16} />
-                        </button>
-                        <button
-                          className="review-action-btn delete-btn"
-                          onClick={() => handleDeleteReview(review.$id)}
-                          title="Delete review"
-                          aria-label="Delete review"
-                        >
-                          <FiTrash2 size={16} />
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </motion.div>
               ))
@@ -435,69 +350,7 @@ export const Reviews = () => {
           </AnimatePresence>
         </div>
 
-        {/* Edit Review Modal */}
-        <AnimatePresence>
-          {editingReviewId && (
-            <motion.div
-              className="edit-modal-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={handleCancelEdit}
-            >
-              <motion.div
-                className="edit-modal"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <h3>Edit Your Review</h3>
-
-                <div className="form-rating">
-                  <label>Rating:</label>
-                  <select
-                    value={editFormData.rating}
-                    onChange={(e) => setEditFormData({ ...editFormData, rating: parseInt(e.target.value) })}
-                    className="form-select"
-                  >
-                    <option value="5">★★★★★ Excellent</option>
-                    <option value="4">★★★★☆ Good</option>
-                    <option value="3">★★★☆☆ Average</option>
-                    <option value="2">★★☆☆☆ Fair</option>
-                    <option value="1">★☆☆☆☆ Poor</option>
-                  </select>
-                </div>
-
-                <textarea
-                  placeholder="Update your review..."
-                  value={editFormData.message}
-                  onChange={(e) => setEditFormData({ ...editFormData, message: e.target.value })}
-                  className="form-textarea"
-                />
-
-                {editError && <p className="form-error">{editError}</p>}
-
-                <div className="form-buttons">
-                  <button
-                    className="btn-submit"
-                    onClick={() => handleSaveEdit(editingReviewId)}
-                    disabled={isEditSubmitting}
-                  >
-                    {isEditSubmitting ? 'Saving...' : 'Save Changes'}
-                  </button>
-                  <button
-                    className="btn-cancel"
-                    onClick={handleCancelEdit}
-                    disabled={isEditSubmitting}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Edit functionality removed */}
 
         {!isOnline && <div className="offline-indicator">You are offline. Reviews are cached.</div>}
 
