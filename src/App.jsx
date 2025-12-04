@@ -57,7 +57,7 @@ function App() {
         <meta property="og:locale" content="en_US" />
 
         {/* Twitter / X */}
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content={`${SITE_URL}/auri_logo.png`} />
         <meta name="twitter:url" content={SITE_URL} />
         <meta name="twitter:title" content="Auri — A Calm Place to Share Your World" />
         <meta 
