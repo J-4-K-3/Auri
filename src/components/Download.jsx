@@ -80,7 +80,7 @@ export const Download = () => {
         <DownloadModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          downloadUrl="https://apknow.one/opjojFmuNZIGOKa"
+          downloadUrl="https://i.apponthego.com/74e5f"
         />
       </motion.div>
     </motion.div>

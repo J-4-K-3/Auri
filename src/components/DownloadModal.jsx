@@ -38,15 +38,15 @@ export const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
           >
             <h2 id="dm-title">Download Auri APK</h2>
             <p className="dm-message">
-              You will be redirected to our host to download the APK.
+              You'll be directed to App on the Go, our trusted distribution partner.
             </p>
 
             <div className="dm-quote">
-              You'll be taken to <strong>apknow.one</strong>. Click "Download" and the APK will begin downloading instantly.
+              Simply click <strong>"Download App"</strong> and your APK will download instantly. It's that easy.
             </div>
 
             <p className="dm-message">
-              We only link to verified hosts — sites we use are reviewed and safe.
+              App on the Go is a verified, trusted host for safe and instant app distribution.
             </p>
 
             <div className="dm-actions">
@@ -54,7 +54,7 @@ export const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
                 Cancel
               </button>
               <button className="dm-btn dm-confirm" onClick={handleDownload}>
-                Download from apknow.one
+                Understood
               </button>
             </div>
           </motion.div>
