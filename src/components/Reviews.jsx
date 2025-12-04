@@ -4,14 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   fetchReviews,
   submitReview,
-  getCurrentUser,
   loginUser,
-  logoutUser,
-  restoreSession,
-  saveSession,
   saveReviewsCache,
   getReviewsCache,
-  getLastSyncTime,
 } from '../lib/Appwrite';
 import LoginModal from './LoginModal';
 import '../styles/Reviews.css';
@@ -21,12 +16,10 @@ export const Reviews = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formData, setFormData] = useState({ username: '', rating: 5, message: '' });
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const [isLoadingReviews, setIsLoadingReviews] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  // Editing removed: guests cannot edit/delete; owners editing will be added later
 
   // Listen for online/offline status changes
   useEffect(() => {
@@ -42,13 +35,11 @@ export const Reviews = () => {
     };
   }, []);
 
-  // Load reviews on mount
+  // Load reviews on mount (no session restore)
   useEffect(() => {
     const init = async () => {
       setIsLoadingReviews(true);
       try {
-        // No session restore: users start fresh each visit
-        
         // Load reviews: offline-first, then sync with server if online
         let loadedReviews = [];
 
@@ -80,38 +71,41 @@ export const Reviews = () => {
     init();
   }, [isOnline]);
 
+  // Simply open the form
   const handleAddReview = () => {
-    // If user is logged in, open the review form directly.
-    // If not logged in, prompt the login modal.
-    if (currentUser) {
-      setFormData((prev) => ({
-        ...prev,
-        username: currentUser.name || currentUser.email || prev.username,
-      }));
-      setIsFormOpen(true);
-    } else {
-      setIsLoginModalOpen(true);
-    }
+    console.log('Opening review form');
+    setIsFormOpen(true);
   };
 
+  // Submit button clicked - show login modal
+  const handleSubmitClick = () => {
+    console.log('Submit clicked, showing login modal');
+    setIsLoginModalOpen(true);
+  };
+
+  // User logs in from modal
   const handleLoginAttempt = async (username, password) => {
     try {
+      console.log('Login attempted');
       const user = await loginUser(username, password);
-      setCurrentUser(user);
-      // No session save: fresh login each time
-      setFormData((prev) => ({ ...prev, username: user.name || user.email || username }));
+      console.log('Login successful, prefilling and submitting');
+      // Close modal and prefill username
       setIsLoginModalOpen(false);
-      // Open form so user can review their message before submitting
-      setIsFormOpen(true);
+      setFormData((prev) => ({ ...prev, username: user.name || user.email || username }));
+      // Auto-submit with logged-in user ID
+      setTimeout(() => submitReviewToAppwrite(user.$id), 100);
     } catch (error) {
+      console.error('Login error:', error);
       throw error;
     }
   };
 
+  // Guest submits without logging in
   const handleSubmitAnyway = () => {
+    console.log('Guest submit');
     setIsLoginModalOpen(false);
-    // Open form so guest can enter their review
-    setIsFormOpen(true);
+    // Submit as guest with no userId
+    submitReviewToAppwrite(null);
   };
 
   const submitReviewToAppwrite = async (userId = null) => {
@@ -123,8 +117,8 @@ export const Reviews = () => {
     setIsSubmitting(true);
     setSubmitError('');
 
-    // If currentUser exists prefer its $id; otherwise use provided userId or empty string for guest
-    const cleanUserId = (currentUser && currentUser.$id) || userId || '';
+    // userId is passed in; otherwise empty string for guest
+    const cleanUserId = userId || '';
 
     try {
       await submitReview({
@@ -159,7 +153,7 @@ export const Reviews = () => {
       }
 
       // Reset form
-      setFormData({ username: currentUser?.name || currentUser?.email || '', rating: 5, message: '' });
+      setFormData({ username: '', rating: 5, message: '' });
       setIsFormOpen(false);
       setSubmitError('');
     } catch (error) {
@@ -263,7 +257,7 @@ export const Reviews = () => {
               <div className="form-buttons">
                 <button
                   className="btn-submit"
-                  onClick={() => submitReviewToAppwrite()}
+                  onClick={handleSubmitClick}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Review'}
@@ -272,7 +266,7 @@ export const Reviews = () => {
                   className="btn-cancel"
                   onClick={() => {
                     setIsFormOpen(false);
-                    setFormData({ username: currentUser?.name || currentUser?.email || '', rating: 5, message: '' });
+                    setFormData({ username: '', rating: 5, message: '' });
                     setSubmitError('');
                   }}
                   disabled={isSubmitting}
