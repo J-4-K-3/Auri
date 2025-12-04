@@ -42,21 +42,13 @@ export const Reviews = () => {
     };
   }, []);
 
-  // Load reviews on mount and restore session
+  // Load reviews on mount
   useEffect(() => {
     const init = async () => {
       setIsLoadingReviews(true);
       try {
-        // Try to restore session from localStorage
-        const restoredUser = await restoreSession();
-        if (restoredUser) {
-          setCurrentUser(restoredUser);
-          setFormData((prev) => ({
-            ...prev,
-            username: restoredUser.name || restoredUser.email || '',
-          }));
-        }
-
+        // No session restore: users start fresh each visit
+        
         // Load reviews: offline-first, then sync with server if online
         let loadedReviews = [];
 
@@ -106,13 +98,11 @@ export const Reviews = () => {
     try {
       const user = await loginUser(username, password);
       setCurrentUser(user);
-      saveSession(user); // Explicitly save session
-        console.log('Login successful:', { userId: user.$id, name: user.name, email: user.email });
+      // No session save: fresh login each time
       setFormData((prev) => ({ ...prev, username: user.name || user.email || username }));
       setIsLoginModalOpen(false);
-
-      // Auto-submit after login with the validated $id
-      setTimeout(() => submitReviewToAppwrite(user.$id), 300);
+      // Open form so user can review their message before submitting
+      setIsFormOpen(true);
     } catch (error) {
       throw error;
     }
@@ -120,8 +110,8 @@ export const Reviews = () => {
 
   const handleSubmitAnyway = () => {
     setIsLoginModalOpen(false);
-    // Submit as guest: pass null or empty string for userId
-    submitReviewToAppwrite(null);
+    // Open form so guest can enter their review
+    setIsFormOpen(true);
   };
 
   const submitReviewToAppwrite = async (userId = null) => {
