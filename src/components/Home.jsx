@@ -2,10 +2,19 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import '../styles/Home.css';
 import DownloadModal from './DownloadModal';
+import IncentivesModal from './IncentivesModal';
 import { useState } from 'react';
 
 export const Home = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+   const [modalOpen, setModalOpen] = useState(false);
+   const [incentivesModalOpen, setIncentivesModalOpen] = useState(false);
+   const [entered, setEntered] = useState(() => {
+     try {
+       return localStorage.getItem('incentiveEntered') === 'true';
+     } catch {
+       return false;
+     }
+   });
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -38,6 +47,32 @@ export const Home = () => {
           <img src="/auri_logo.png" alt="Auri Logo" className="home-logo" />
         </motion.div>
 
+        <motion.div className="incentives-section" variants={itemVariants}>
+          <h3>🎉 Incentives Program</h3>
+          <p className="incentives-rules">
+            Win <strong>$3</strong>! Enter your referral reward code below and stay active for at least 8 hours after signing up. Real person verification required. Limited offer!
+          </p>
+          <p className="incentives-participate">
+            To participate, download the app below.
+          </p>
+          <p className="incentives-winners">
+            4 winners already claimed their prize! Only 6 spots left.
+          </p>
+          <p className="incentives-note">
+            Note: Incentives can only be received via PayPal.
+          </p> <br />
+          {entered ? (
+            <div className="entered-status">
+              <div className="spinner"></div>
+              <p>Winner will be chosen in 8 hours, check back here soon</p>
+            </div>
+          ) : (
+            <button className="enter-program-btn" onClick={() => setIncentivesModalOpen(true)}>
+              Enter Program
+            </button>
+          )}
+        </motion.div>
+
         <motion.div className="screenshots-carousel" variants={itemVariants}>
           <motion.img
             src="/screenshot_1.jpeg"
@@ -54,8 +89,8 @@ export const Home = () => {
             transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
           />
           <motion.img
-            src="/screenshot_3.jpeg"
-            alt="Screenshot 3"
+            src="/home.jpeg"
+            alt="home"
             className="carousel-image"
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 5, repeat: Infinity, delay: 3 }}
@@ -84,6 +119,12 @@ export const Home = () => {
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           downloadUrl="https://apkpure.com/p/com.jake285.Auri"
+        />
+
+        <IncentivesModal
+          isOpen={incentivesModalOpen}
+          onClose={() => setIncentivesModalOpen(false)}
+          onSubmit={() => setEntered(true)}
         />
       </motion.div>
     </motion.div>

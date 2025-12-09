@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX, FiHome, FiInfo, FiFileText, FiDownload, FiStar } from 'react-icons/fi';
 import '../styles/Navigation.css';
 
 export const Navigation = () => {
@@ -12,11 +12,11 @@ export const Navigation = () => {
   const isActive = (path) => location.pathname === path;
 
   const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/terms', label: 'Legal' },
-    { path: '/download', label: 'Download' },
-    { path: '/reviews', label: 'Reviews' },
+    { path: '/', label: 'Home', icon: FiHome },
+    { path: '/about', label: 'About', icon: FiInfo },
+    { path: '/terms', label: 'Legal', icon: FiFileText },
+    { path: '/download', label: 'Download', icon: FiDownload },
+    { path: '/reviews', label: 'Reviews', icon: FiStar },
   ];
 
   return (
@@ -81,6 +81,22 @@ export const Navigation = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <div className="bottom-nav">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`bottom-nav-link ${isActive(item.path) ? 'active' : ''}`}
+            >
+              <Icon size={20} />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 };
