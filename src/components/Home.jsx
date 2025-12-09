@@ -56,7 +56,7 @@ export const Home = () => {
             To participate, download the app below.
           </p>
           <p className="incentives-winners">
-            5 winners already claimed their prize! Only 5 spots left.
+            7 winners already claimed their prize! Only 3 spots left.
           </p>
           <p className="incentives-note">
             Note: Incentives can only be received via PayPal.
