@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiFileText, FiShield, FiLock } from 'react-icons/fi';
 import '../styles/Terms.css';
 
 const sectionsData = [
   {
     id: 'summary',
     title: 'Summary',
+    icon: <FiFileText />,
     content: (
       <>
         <p>
@@ -18,18 +19,19 @@ const sectionsData = [
   {
     id: 'terms',
     title: 'Terms & Conditions',
+    icon: <FiShield />,
     content: (
       <>
         <p><strong>Effective Date:</strong> December 2, 2025</p> <br />
 
-        <h4>1. Accounts &amp; Access</h4>
+        <h4>1. Accounts & Access</h4>
         <ul>
           <li>Users must create an account to use Auri; guest access is not available.</li>
           <li>Users may request permanent deletion of their account and associated data at any time.</li>
           <li>Users are responsible for keeping their login credentials secure.</li>
         </ul> <br />
 
-        <h4>2. Content &amp; Interaction</h4>
+        <h4>2. Content & Interaction</h4>
         <ul>
           <li>Users may post images, media, links, and text. Text posts must include at least one image.</li>
           <li>Users may edit or delete their own content at any time.</li>
@@ -38,7 +40,7 @@ const sectionsData = [
           <li>Users may report inappropriate content, which is reviewed by AI systems and human moderators.</li>
         </ul> <br />
 
-        <h4>3. Moderation &amp; Safety</h4>
+        <h4>3. Moderation & Safety</h4>
         <p>
           Auri uses automated systems and human moderation to keep the community safe. Content that violates guidelines may result in removal, warnings, or suspension. Severe violations may be escalated to authorities when required.
         </p> <br />
@@ -48,12 +50,12 @@ const sectionsData = [
           Auri may connect with other Innoxation apps to access additional features. Syncing is optional and only used for features that rely on cross-app functionality.
         </p> <br />
 
-        <h4>5. Liability &amp; Responsibility</h4>
+        <h4>5. Liability & Responsibility</h4>
         <p>
           Users are responsible for the content they post. Innoxation Tech Inc moderates the platform but is not liable for individual user content. Illegal or harmful content is prohibited and may be reported to law enforcement if necessary.
         </p> <br />
 
-        <h4>6. Updates &amp; Changes</h4>
+        <h4>6. Updates & Changes</h4>
         <p>
           Auri may release updates or bug fixes that improve performance or stability. Users will be notified if any update requires manual installation.
         </p> <br />
@@ -68,6 +70,7 @@ const sectionsData = [
   {
     id: 'privacy',
     title: 'Privacy Policy',
+    icon: <FiLock />,
     content: (
       <>
         <p><strong>Effective Date:</strong> December 2, 2025</p> <br />
@@ -95,7 +98,7 @@ const sectionsData = [
           <li>Support optional cross-app features within Innoxation apps</li>
         </ul> <br />
 
-        <h4>3. Sharing &amp; Disclosure</h4>
+        <h4>3. Sharing & Disclosure</h4>
         <ul>
           <li>Auri does <strong>not</strong> sell user data.</li>
           <li>Data is only shared within Innoxation systems when syncing features (optional).</li>
@@ -162,17 +165,20 @@ export const Terms = () => {
   return (
     <div className="terms-container">
       <div className="terms-content">
-        <h1>Terms &amp; Conditions — Overview</h1>
+        <h1>Terms & Conditions — Overview</h1>
 
         <div className="accordion">
           {sectionsData.map((s) => (
-            <div className="accordion-item" key={s.id}>
+            <div className={`accordion-item ${openId === s.id ? 'active' : ''}`} key={s.id}>
               <button
                 className="accordion-header"
                 onClick={() => toggle(s.id)}
                 aria-expanded={openId === s.id}
               >
-                <span>{s.title}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ color: 'var(--teal)', fontSize: '24px' }}>{s.icon}</span>
+                  <span>{s.title}</span>
+                </div>
                 <span className="accordion-icon">{openId === s.id ? <FiChevronUp /> : <FiChevronDown />}</span>
               </button>
 

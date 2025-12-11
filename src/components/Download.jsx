@@ -5,22 +5,33 @@ import DownloadModal from './DownloadModal';
 
 export const Download = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = ['/share_your_world.jpg', '/stories_memories.jpg', '/your_circle.jpg'];
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const media = [
+    { type: 'image', src: '/share_your_world.jpg' },
+    { type: 'video', src: '/vid_1.mp4' },
+    { type: 'image', src: '/stories_memories.jpg' },
+    { type: 'video', src: '/vid_2.mp4' },
+    { type: 'image', src: '/meme_1.jpg' },
+    { type: 'image', src: '/your_circle.jpg' },
+    { type: 'video', src: '/vid_3.mp4' },
+    { type: 'image', src: '/meme_2.jpg' },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
+      setCurrentMediaIndex((prev) => (prev + 1) % media.length);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const imageVariants = {
+  const mediaVariants = {
     enter: { opacity: 0, scale: 0.95 },
     center: { opacity: 1, scale: 1 },
     exit: { opacity: 0, scale: 1.05 },
   };
+
+  const currentMedia = media[currentMediaIndex];
 
   return (
     <motion.div
@@ -36,29 +47,47 @@ export const Download = () => {
         transition={{ duration: 0.6, delay: 0.1 }}
       >
         <h1>Experience Auri</h1>
+        <p className="join-us-text">Join Us</p>
 
         <motion.div className="image-carousel">
           <AnimatePresence mode="wait">
-            <motion.img
-              key={currentImageIndex}
-              src={images[currentImageIndex]}
-              alt={`Feature ${currentImageIndex + 1}`}
-              className="carousel-image-main"
-              variants={imageVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.5 }}
-            />
+            {currentMedia.type === 'image' ? (
+              <motion.img
+                key={currentMediaIndex}
+                src={currentMedia.src}
+                alt={`Feature ${currentMediaIndex + 1}`}
+                className="carousel-image-main"
+                variants={mediaVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+              />
+            ) : (
+              <motion.video
+                key={currentMediaIndex}
+                src={currentMedia.src}
+                className="carousel-video-main"
+                variants={mediaVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            )}
           </AnimatePresence>
 
           <div className="carousel-indicators">
-            {images.map((_, index) => (
+            {media.map((_, index) => (
               <motion.button
                 key={index}
-                className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
-                onClick={() => setCurrentImageIndex(index)}
-                animate={{ scale: index === currentImageIndex ? 1.2 : 1 }}
+                className={`indicator ${index === currentMediaIndex ? 'active' : ''}`}
+                onClick={() => setCurrentMediaIndex(index)}
+                animate={{ scale: index === currentMediaIndex ? 1.2 : 1 }}
                 transition={{ duration: 0.3 }}
               />
             ))}

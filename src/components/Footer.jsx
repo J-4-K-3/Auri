@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaTiktok } from "react-icons/fa";
 import '../styles/Footer.css';
 
 export const Footer = () => {
@@ -19,7 +20,10 @@ export const Footer = () => {
         </div>
 
         <div className="footer-section footer-links">
-          {/* Terms moved into primary navigation under 'Legal' */}
+          <a href="https://tiktok.com/@auri_plat_form" target="_blank" rel="noopener noreferrer" className="social-link">
+            <FaTiktok size={24} />
+            <span>TikTok</span>
+          </a>
         </div>
       </div>
     </footer>

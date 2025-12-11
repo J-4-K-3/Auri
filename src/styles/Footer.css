@@ -92,6 +92,12 @@
   background: linear-gradient(135deg, rgba(255, 138, 101, 0.2), rgba(247, 110, 142, 0.2));
 }
 
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
   .footer {
     padding: 30px 16px;
