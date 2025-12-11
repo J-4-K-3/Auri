@@ -98,6 +98,21 @@
   transform: translateY(0px);
 }
 
+.carousel-controls {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.carousel-btn {
+  background: none;
+  border: none;
+  color: rgba(233, 236, 244, 0.6);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
 @media (max-width: 768px) {
   .download-container {
     padding: 40px 16px;

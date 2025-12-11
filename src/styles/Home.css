@@ -372,12 +372,12 @@
   }
 
   .phone-mockups {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
   }
 
   .phone-mockup {
-    width: 120px;
+    width: 150px;
   }
 
   .emoji-grid {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/Download.css';
 import DownloadModal from './DownloadModal';
@@ -17,13 +17,13 @@ export const Download = () => {
     { type: 'image', src: '/meme_2.jpg' },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMediaIndex((prev) => (prev + 1) % media.length);
-    }, 5000);
+  const nextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev + 1) % media.length);
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const prevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev - 1 + media.length) % media.length);
+  };
 
   const mediaVariants = {
     enter: { opacity: 0, scale: 0.95 },
@@ -91,6 +91,15 @@ export const Download = () => {
                 transition={{ duration: 0.3 }}
               />
             ))}
+          </div>
+
+          <div className="carousel-controls">
+            <button className="carousel-btn prev-btn" onClick={prevMedia}>
+              ‹ Back
+            </button>
+            <button className="carousel-btn next-btn" onClick={nextMedia}>
+              Next ›
+            </button>
           </div>
         </motion.div>
 
