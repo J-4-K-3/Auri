@@ -10,10 +10,75 @@ import { Reviews } from './components/Reviews';
 import { Terms } from './components/Terms';
 import { Footer } from './components/Footer';
 import { Navigation } from './components/Navigation';
+import { databases, APPWRITE_DATABASE_ID, IDs, COLLECTION_TRACKER_ID } from './lib/Appwrite';
 import './styles/globals.css';
 import './App.css';
 
 const SITE_URL = 'https://auri-green.vercel.app';
+
+// OS detection function
+function getOS() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  if (/android/i.test(userAgent)) {
+    return "Android";
+  }
+
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return "iOS";
+  }
+
+  return "Other";
+}
+
+// Track user OS
+async function trackUserOS() {
+  const userOS = getOS();
+  // Create a hash-like ID from user agent (simple hash function)
+  const hash = (str) => {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+      h = ((h << 5) - h + str.charCodeAt(i)) & 0xffffffff;
+    }
+    return Math.abs(h).toString(36).slice(0, 32);
+  };
+  const sessionId = hash(navigator.userAgent + window.location.hostname);
+
+  console.log('Tracking OS:', userOS, 'Session ID:', sessionId);
+
+  try {
+    // Try to update existing document first
+    console.log('Attempting to update document...');
+    await databases.updateDocument(
+      APPWRITE_DATABASE_ID,
+      COLLECTION_TRACKER_ID,
+      sessionId,
+      {
+        os: userOS,
+        lastActive: new Date().toISOString(),
+      }
+    );
+    console.log('Document updated successfully');
+  } catch (error) {
+    console.log('Update failed, trying to create document...', error);
+    // If document doesn't exist, create it
+    try {
+      await databases.createDocument(
+        APPWRITE_DATABASE_ID,
+        COLLECTION_TRACKER_ID,
+        sessionId,
+        {
+          os: userOS,
+          lastActive: new Date().toISOString(),
+          sessionId: sessionId,
+        }
+      );
+      console.log('Document created successfully');
+    } catch (createError) {
+      console.error('Error tracking user OS:', createError);
+    }
+  }
+}
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +86,13 @@ function App() {
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
+
+  // Track user on app load
+  useEffect(() => {
+    console.log('COLLECTION_TRACKER_ID:', COLLECTION_TRACKER_ID);
+    console.log('APPWRITE_DATABASE_ID:', APPWRITE_DATABASE_ID);
+    trackUserOS();
+  }, []);
 
   return (
     <>

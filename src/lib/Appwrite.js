@@ -21,6 +21,7 @@ export const APPWRITE_DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 export const COLLECTION_USERS_ID = import.meta.env.VITE_APPWRITE_COLLECTION_USERS_ID;
 export const COLLECTION_REVIEWS_ID = import.meta.env.VITE_APPWRITE_COLLECTION_REVIEWS_ID;
 export const COLLECTION_INCENTIVE_ID = import.meta.env.VITE_APPWRITE_COLLECTION_INCENTIVE_ID;
+export const COLLECTION_TRACKER_ID = import.meta.env.VITE_APPWRITE_COLLECTION_TRACKER_ID;
 
 // ============================================
 // SANITIZATION HELPERS (ported from mobile)
